@@ -1,24 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import Comment from "./components/Comment";
+import Send from "./components/Send";
+import Replies from "./components/Replies";
+import DeleteModal from "./components/DeleteModal";
+import { useSelector } from "react-redux";
 
 function App() {
+  const comments = useSelector((state) => state.comment.comments);
+  const isModalOpen = useSelector((state) => state.comment.isModalOpen);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <main className="p-5">
+      {isModalOpen && <DeleteModal />}
+      <div className="animate-flip-down flex flex-col gap-3 md:w-[600px] mx-auto">
+        {comments.map((comment) => (
+          <div className="space-y-4" key={comment.id}>
+            <Comment comment={comment} />
+            <Replies />
+          </div>
+        ))}
+        <Send />
+      </div>
+    </main>
   );
 }
 
